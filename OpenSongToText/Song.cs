@@ -19,24 +19,25 @@ namespace OpenSongToText
         public string GetCoreLyrics()
         {
             List<string> finalLyrics = new List<string>();
+            StringBuilder final = new StringBuilder();
             using (var tr = new StringReader(Lyrics))
             {
                 while (tr.ReadLine() is string line)
                 {
-                    if (line.Length > 1)
+                    if (string.IsNullOrWhiteSpace(line))
                     {
-                        if (line[0] == ' ')
-                        {
-                            finalLyrics.Add(line);
-                        }
+                        final.AppendLine();
                     }
                     else
                     {
-                        finalLyrics.Add(line);
+                        if (line[0] == ' ')
+                        {
+                            final.AppendLine(line);
+                        }
                     }
                 }
             }
-            return string.Join(Environment.NewLine, finalLyrics);
+            return final.ToString();
         }
     }
 }
