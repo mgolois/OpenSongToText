@@ -1,0 +1,42 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Xml.Serialization;
+
+namespace OpenSongToText
+{
+    [XmlRoot("song")]
+    public class Song
+    {
+        [XmlElement("title")]
+        public string Title { get; set; }
+        [XmlElement("author")]
+        public string Author { get; set; }
+        [XmlElement("lyrics")]
+        public string Lyrics { get; set; }
+
+        public string GetCoreLyrics()
+        {
+            List<string> finalLyrics = new List<string>();
+            using (var tr = new StringReader(Lyrics))
+            {
+                while (tr.ReadLine() is string line)
+                {
+                    if (line.Length > 1)
+                    {
+                        if (line[0] == ' ')
+                        {
+                            finalLyrics.Add(line);
+                        }
+                    }
+                    else
+                    {
+                        finalLyrics.Add(line);
+                    }
+                }
+            }
+            return string.Join(Environment.NewLine, finalLyrics);
+        }
+    }
+}
